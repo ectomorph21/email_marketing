@@ -16,7 +16,7 @@ No installation required. Simply place all files in single directory, open termi
 As the program stands, users must populate respective customer_list_test.csv file, and upload it using the Create SQLite DB button in the program. Program requires user to have access to smtp server for sending email (yahoo, Gmail, etc.). If using proprietary email server, must ensure dkim, dmarc, PTR (reverse domain), and spf records are valid. This will ensure highest probability of emails being received and not marked as spam. https://www.mail-tester.com/ is another site users can use to increase receive rate, and avoid being marked as spam. A score of 10 is the goal. User settings, and email templates reside in user_settings.json file.
 
  * Troubleshooting *
-Use debug server in order to troubleshoot format or email issues (python3 -m smtpd -c DebuggingServer -n localhost:1025). Test, test, test! Use the debug server to get your email templates just right, before sending live emails.  
+Use debug server in order to troubleshoot format or email issues (python3 -m smtpd -c DebuggingServer -n localhost:1025). Test, test, test! Use the debug server to get your email templates just right, before sending live emails. Program has been tested on Debian Buster OS, and Windows 10.
 
 * File Directory *
 -create_sqlite_db.py (for creating Sqlite DB from user upload of csv)
