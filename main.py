@@ -4,8 +4,6 @@ import tkinter as tk
 import create_sqlite_db
 import sqlite_db_controller
 from objects import *
-#from customer_objects import *
-#from email_objects import *
 
 with open('user_settings.json') as user_setting:
     data = json.load(user_setting)
@@ -60,11 +58,7 @@ class EmailMarketing:
         command=lambda:sqlite_db_controller.export_db_csv(self.DB_CHECK.get())).grid(column=1,row=1,sticky=(N,S,E,W))
         send_prospects_button = ttk.Button(welcome_frame,text=f'Send email to prospects',style='Action.TButton',
         command=self.send_prospect_email).grid(column=1,row=2,sticky=(N,S,E,W))
-#        create_user = ttk.Button(welcome_frame, text='Create user',style='Caution.TButton',command=self.create_user).grid(column=1, row=0, sticky=(N,S,E,W))
         close_db = ttk.Button(welcome_frame, text='Close db',style='Action.TButton',command=self.close_db).grid(column=0,row=3,sticky=(E,W))
-#        root.bind('<Destroy>',lambda e: self.close_db)
-#        root.columnconfigure(0,weight=1,minsize=100)
-#        root.rowconfigure(0,weight=1,minsize=100)
         
     def find_db_file(self):
         db_list = Tk()
@@ -78,12 +72,10 @@ class EmailMarketing:
         
     def select_db(self):
         """Select database method tied to find_db_file method"""
-#        print(self.DB_CHECK.get())
         db_name = self.DB_CHECK.get()
         sqlite_db_controller.find_db_file(db_name)
         
     def create_db(self):
-#        print(self.DB_CREATE.get())
         db_name = self.DB_CREATE.get()
         csv_file = filedialog.askopenfilename(filetypes=[("CSV",'*.csv')])
         if csv_file != "":
@@ -218,26 +210,7 @@ class EmailMarketing:
         """Close SQLite DB connection."""
         sqlite_db_controller.close()
         messagebox.showinfo(message='DB closed. You should close program.')
-"""        
-    def create_user(self):
-        user_data_input = Toplevel(root)
-        user_data_input.title('Enter user data')
-#        user_data_input.grid(column=2,row=2)
-#        user_data_input.geometry('600x300-100-100')
-        user_first_name = tk.StringVar()
-#        user_last_name = StringVar()
-        label = ttk.Label(user_data_input, text='First name:')
-        label.grid(column=0,row=0,sticky=NW)
-        first_name = ttk.Entry(user_data_input, textvariable=user_first_name)
-        first_name.grid(column=1,row=0,sticky=NW)
 
-    def calculate(self, *args):
-        try:
-            value = float(self.feet.get())
-            self.meters.set(int(0.3048 * value * 10000.0 + 0.5)/10000.0)
-        except ValueError:
-            pass
-"""
 root = Tk()
 EmailMarketing(root)
 root.mainloop()
