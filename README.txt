@@ -40,3 +40,6 @@ Email_Check ? (FK - User_Setting)
  * Maintainers *
 - Ron Stephenson
 - and anyone else interested in contributing
+
+ * License notes *
+Users are free to use code for legitimate business or personal usage. Not intended to be used for criminal activity.
