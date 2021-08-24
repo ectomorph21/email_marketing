@@ -33,7 +33,7 @@ def connect(db_name):
         else:
             conn = sqlite3.connect(db_name)
         conn.row_factory = sqlite3.Row
-    messagebox.showinfo(message=f'Connected to {db_name} DB.')
+    messagebox.showinfo(message='Connected to:',detail=f'{db_name}')
 
 def close():
     """Close database connection"""
