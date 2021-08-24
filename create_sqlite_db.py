@@ -2,6 +2,7 @@ import csv
 import sqlite3
 
 def Create_Database(csv_file,db_name):
+    """Creates customer database"""
     conn = sqlite3.connect(f"{db_name}_customer_db.sqlite")
     c = conn.cursor()
     #drop table statements
@@ -17,4 +18,3 @@ def Create_Database(csv_file,db_name):
             count += 1
     conn.commit()
     conn.close()
-
