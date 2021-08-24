@@ -12,9 +12,10 @@
             "FROM_HEADER": "John Doe - John Doe Inc <john@johndoeinc.com>",
             "UNSUBSCRIBE_EMAIL": "abuse@johndoeinc.com",
             "MAILING_LIST": ["business","personal"],
-            "SIGNATURE": "John Doe\n123-456-7890",
-            "BAD_DOMAIN": ["hotmail.com","live.com","msn.com","outlook.com"],
-            "TARGET_CUSTOMER": ["Doctors","Lawyers"]
+            "SIGNATURE1": "John Doe\n123-456-7890",
+            "SIGNATURE2": "John Doe\n123-456-7890\nPresident\nJohn Doe Inc.",
+            "BAD_DOMAINS": ["hotmail.com","live.com","msn.com","outlook.com"],
+            "TARGET_CUSTOMERS": ["Doctors","Lawyers"]
         }
     ]
     ,
@@ -46,6 +47,45 @@
             "FOOTER": ["Footer template 1",
             "Footer template 2",
             "Footer template 3"]
+        }
+    ],
+    "alternate_subject":[
+        {
+            "customer": [
+            "Customer subject 1",
+            "Customer subject 2",
+            "Customer subject 3"],
+            "partner": [
+            "Partner subject 1",
+            "Partner subject 2",
+            "Partner subject 3"],
+            "previous_customer": [
+            "Previous customer subject 1",
+            "Previous customer subject 1"],
+            "holiday": "Happy holidays"
+        }
+    ],
+    "alternate_email":[
+        {
+            "buyer_seller": ["Template1",
+            "Template2",
+            "Template3"],
+            "showing_agent": ["Template1",
+            "Template2",
+            "Template3"],
+            "previous": ["Template1",
+            "Template2",
+            "Template3"],
+            "holiday": "I wanted to wish you and the family a happy holidays. I hope all is well, and thank you for the opportunity to do business together."
+        }
+    ],
+    "alternate_footer":[
+        {
+            "customer": ["--Services offered--\n1. Service1\n2. Service2\n3. Service3",
+            "--Additional benefits--\n-Benefit1\n-Benefit2\n-Benefit3"
+            ],
+            "partner": ["--Support--\n-Support1\n-Support2\n-Support3\n-Support4",
+            "--Additional support--\n-Support1\n-Support2\n-Support3"]
         }
     ]
 }
