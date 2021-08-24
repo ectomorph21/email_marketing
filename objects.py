@@ -6,12 +6,14 @@ from email.message import EmailMessage
 from random import *
 import pytz
 from pytz import *
+from tkinter import messagebox
 
 LETTERS = ['a','b','c','d','e','f']
 DATE = datetime.today()
 
 class MarketingEmail():
     def __init__(self,FROM,address,subject,domain,UNSUBSCRIBE,mailing_list,prev_cus,name,body,signature,footer):
+        """Custom email class"""
         self.msg = EmailMessage()
         self.msg['From'] = FROM
         self.msg['To'] = address
@@ -67,6 +69,7 @@ class MarketingEmail():
 class Customer:
     def __init__(self,customerID=0,company=None,city=None,state=None,industry=None,previous_customer=None,quoted=None,
     website=None,first_name=None,last_name=None,email_address=None,last_contact=None,notes=None):
+        """Customer class"""
         self.customerID = customerID
         self.company = company
         self.city = city
