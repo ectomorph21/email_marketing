@@ -66,6 +66,7 @@ def load_settings():
             settings.ALL_TEMPLATES.append(t.emailbody)
         else:
             settings.HOLIDAY_TEMPLATES.append(t.emailbody)
+    settings.TARGET_TEMPLATES += settings.PROSPECT_TEMPLATES
     footers = sqlite_db_controller.get_footers()
     for f in footers:
         settings.FOOTER.append(f)
