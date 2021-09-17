@@ -202,10 +202,10 @@ def view_next_single(build):
                     time_delta = get_date() - row_date
                     email_check = c.email_address.rsplit('@')
                     if time_delta >= settings.CALL_DATE and count > 0:
-                        count -= 1
                         if email_check[1] in settings.EMAIL_CHECK:
                             pass
                         else:
+                            count -= 1
                             result += f"ID: {c.customerID}\nCompany: {c.company}\nName: {c.first_name}\nEmail: {c.email_address}\nDays since contact: {(time_delta.total_seconds()/86400):.0f} days\nStatus: {c.status}\nNotes: {c.notes}"
                             name = c.first_name
                             status = c.status
@@ -250,10 +250,10 @@ def random_email():
                     time_delta = get_date() - row_date
                     email_check = c.email_address.rsplit('@')
                     if time_delta >= settings.CALL_DATE and count > 0:
-                        count -= 1
                         if email_check[1] in settings.EMAIL_CHECK:
                             pass
                         else:
+                            count -= 1
                             result += f"ID: {c.customerID}\nCompany: {c.company}\nName: {c.first_name}\nEmail: {c.email_address}\nDays since contact: {(time_delta.total_seconds()/86400):.0f} days\nStatus: {c.status}\nNotes: {c.notes}"
                             name = c.first_name
                             status = c.status
