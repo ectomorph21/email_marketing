@@ -11,18 +11,38 @@ def get_date():
     DATE = datetime.today()
     return DATE
 
-def view_all_customers():
+def view_all_customers(build):
     """View all customers in DB"""
     customers = sqlite_db_controller.get_customers()
     if customers == None:
         pass
     else:
-        result = "%5s%60s%10s%20s%45s%15s%30s\n" % ("ID","Company","Status","Name","Email","Last contact","Notes")
-        for c in customers:
-            result += "%5s%60s%10s%20s%45s%15s%30s\n" % (c.customerID,c.company,c.status,c.first_name,c.email_address,
-            c.last_contact,c.notes)
+        count = 1
+        if build == '':
+            result = "%5s%60s%10s%20s%45s%15s%30s\n" % ("ID","Company","Status","Name","Email","Last contact","Notes")
+            for c in customers:
+                result += "%5s%60s%10s%20s%45s%15s%30s\n" % (c.customerID,c.company,c.status,c.first_name,c.email_address,
+                c.last_contact,c.notes)
+        elif build == "bad_domain":
+            result = "%5s%60s%20s%45s%15s%30s\n" % ("#","Company","Name","Email","Last contact","Notes")
+            for c in customers:
+                if c.email_address != '':
+                    email_check = c.email_address.rsplit('@')
+                    if email_check[1] in settings.EMAIL_CHECK:
+                        result += "%5s%60s%20s%45s%15s%30s\n" % (count,c.company,c.first_name,c.email_address,
+                        c.last_contact,c.notes)
+                        count += 1
+                else:
+                    pass
+        else:
+            result = "%5s%60s%20s%45s%15s%30s\n" % ("#","Company","Name","Email","Last contact","Notes")
+            for c in customers:
+                if c.status == f'{build}':
+                    result += "%5s%60s%20s%45s%15s%30s\n" % (count,c.company,c.first_name,c.email_address,
+                    c.last_contact,c.notes)
+                    count += 1
         c_display = Toplevel()
-        c_display.title('All customers')
+        c_display.title(f'All {build} customers')
         c_display.geometry('1360x738')
         display_customers = Text(c_display,width=1360,height=738,wrap='none')
         ys = ttk.Scrollbar(c_display,orient='vertical',command=display_customers.yview)
