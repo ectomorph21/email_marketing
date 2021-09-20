@@ -31,7 +31,6 @@ class MainGUI:
         menu_misc = Menu(menubar)
         menu_help = Menu(menubar, name='help')
         #menu_info = Menu(menubar)
-        
         menubar.add_cascade(menu=menu_conn, label='Connection')
         menubar.add_cascade(menu=menu_user, label='User')
         menubar.add_cascade(menu=menu_customers, label='Customers')
