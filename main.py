@@ -99,45 +99,66 @@ class MainGUI:
         command=lambda:sqlite_db_controller.export_csv())
         export_csv.grid(column=7,row=4,sticky=(N,S,E,W))
         #customer views and action buttons
-        view_all_button = ttk.Button(welcome_frame, text='View all customers',style='Action.TButton',
-        command=lambda:email_controller.view_all_customers())
-        view_all_button.grid(column=1,row=5,rowspan=2,sticky=(N,S,E,W))
-        random_email = ttk.Button(welcome_frame, text='View random',style='Action.TButton',
-        command=lambda:email_controller.random_email())
-        random_email.grid(column=2,row=5,rowspan=2,sticky=(N,S,E,W))
-        view_prospects = ttk.Button(welcome_frame, text='View prospects',style='Action.TButton',
+        view_prospects = ttk.Button(welcome_frame, text='Send bulk prospects',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('prospect'))
-        view_prospects.grid(column=3,row=5,sticky=(N,S,E,W))
-        view_targets = ttk.Button(welcome_frame, text='View targets',style='Action.TButton',
+        view_prospects.grid(column=1,row=5,sticky=(N,S,E,W))
+        view_targets = ttk.Button(welcome_frame, text='Send bulk targets',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('target'))
-        view_targets.grid(column=4,row=5,sticky=(N,S,E,W))
-        view_quoted = ttk.Button(welcome_frame, text='View quoted',style='Action.TButton',
+        view_targets.grid(column=2,row=5,sticky=(N,S,E,W))
+        view_quoted = ttk.Button(welcome_frame, text='Send bulk quoted',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('quoted'))
-        view_quoted.grid(column=5,row=5,sticky=(N,S,E,W))
-        view_customers = ttk.Button(welcome_frame, text='View customers',style='Action.TButton',
+        view_quoted.grid(column=3,row=5,sticky=(N,S,E,W))
+        view_customers = ttk.Button(welcome_frame, text='Send bulk customers',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('customer'))
-        view_customers.grid(column=6,row=5,sticky=(N,S,E,W))
-        view_partners = ttk.Button(welcome_frame, text='View partners',style='Action.TButton',
+        view_customers.grid(column=4,row=5,sticky=(N,S,E,W))
+        view_partners = ttk.Button(welcome_frame, text='Send bulk partners',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('partner'))
-        view_partners.grid(column=7,row=5,sticky=(N,S,E,W))
-        single_prospect = ttk.Button(welcome_frame, text='Single prospect',style='Action.TButton',
-        command=lambda:email_controller.view_next_single('prospect'))
-        single_prospect.grid(column=3,row=6,sticky=(N,S,E,W))
-        single_target = ttk.Button(welcome_frame, text='Single target',style='Action.TButton',
-        command=lambda:email_controller.view_next_single('target'))
-        single_target.grid(column=4,row=6,sticky=(N,S,E,W))
-        single_quoted = ttk.Button(welcome_frame, text='Single quoted',style='Action.TButton',
-        command=lambda:email_controller.view_next_single('quoted'))
-        single_quoted.grid(column=5,row=6,sticky=(N,S,E,W))
-        single_customer = ttk.Button(welcome_frame, text='Single customer',style='Action.TButton',
-        command=lambda:email_controller.view_next_single('customer'))
-        single_customer.grid(column=6,row=6,sticky=(N,S,E,W))
-        single_partner = ttk.Button(welcome_frame, text='Single partner',style='Action.TButton',
-        command=lambda:email_controller.view_next_single('partner'))
-        single_partner.grid(column=7,row=6,sticky=(N,S,E,W))
-        holiday_button = ttk.Button(welcome_frame,text='Holiday message',style='Action.TButton',
+        view_partners.grid(column=5,row=5,sticky=(N,S,E,W))
+        holiday_button = ttk.Button(welcome_frame,text='Send holiday messages',style='Caution.TButton',
         command=lambda:email_controller.view_holiday_email('customer'))
-        holiday_button.grid(column=6,row=7,sticky=(N,S,E,W))
+        holiday_button.grid(column=6,row=5,sticky=(N,S,E,W))
+        view_all_button = ttk.Button(welcome_frame, text='View all customers in DB',style='Action.TButton',
+        command=lambda:email_controller.view_all_customers(''))
+        view_all_button.grid(column=7,row=5,sticky=(N,S,E,W))
+        single_prospect = ttk.Button(welcome_frame, text='Send single prospect',style='Caution.TButton',
+        command=lambda:email_controller.view_next_single('prospect'))
+        single_prospect.grid(column=1,row=6,sticky=(N,S,E,W))
+        single_target = ttk.Button(welcome_frame, text='Send single target',style='Caution.TButton',
+        command=lambda:email_controller.view_next_single('target'))
+        single_target.grid(column=2,row=6,sticky=(N,S,E,W))
+        single_quoted = ttk.Button(welcome_frame, text='Send single quoted',style='Caution.TButton',
+        command=lambda:email_controller.view_next_single('quoted'))
+        single_quoted.grid(column=3,row=6,sticky=(N,S,E,W))
+        single_customer = ttk.Button(welcome_frame, text='Send single customer',style='Caution.TButton',
+        command=lambda:email_controller.view_next_single('customer'))
+        single_customer.grid(column=4,row=6,sticky=(N,S,E,W))
+        single_partner = ttk.Button(welcome_frame, text='Send single partner',style='Caution.TButton',
+        command=lambda:email_controller.view_next_single('partner'))
+        single_partner.grid(column=5,row=6,sticky=(N,S,E,W))
+        random_email = ttk.Button(welcome_frame, text='Send single random email',style='Caution.TButton',
+        command=lambda:email_controller.random_email())
+        random_email.grid(column=6,row=6,sticky=(N,S,E,W))
+        view_all_bd = ttk.Button(welcome_frame, text='View all bad domains',style='Action.TButton',
+        command=lambda:email_controller.view_all_customers('bad_domain'))
+        view_all_bd.grid(column=7,row=6,sticky=(N,S,E,W))
+        all_prospects = ttk.Button(welcome_frame, text='View all prospects',style='Action.TButton',
+        command=lambda:email_controller.view_all_customers('prospect'))
+        all_prospects.grid(column=1,row=7,sticky=(N,S,E,W))
+        all_targets = ttk.Button(welcome_frame, text='View all targets',style='Action.TButton',
+        command=lambda:email_controller.view_all_customers('target'))
+        all_targets.grid(column=2,row=7,sticky=(N,S,E,W))
+        all_quoted = ttk.Button(welcome_frame, text='View all quoted',style='Action.TButton',
+        command=lambda:email_controller.view_all_customers('quoted'))
+        all_quoted.grid(column=3,row=7,sticky=(N,S,E,W))
+        all_customers = ttk.Button(welcome_frame, text='View all customers',style='Action.TButton',
+        command=lambda:email_controller.view_all_customers('customer'))
+        all_customers.grid(column=4,row=7,sticky=(N,S,E,W))
+        all_partners = ttk.Button(welcome_frame, text='View all partners',style='Action.TButton',
+        command=lambda:email_controller.view_all_customers('partner'))
+        all_partners.grid(column=5,row=7,sticky=(N,S,E,W))
+        all_removed = ttk.Button(welcome_frame, text='View all removed',style='Action.TButton',
+        command=lambda:email_controller.view_all_customers('removed'))
+        all_removed.grid(column=6,row=7,sticky=(N,S,E,W))
         info_button = ttk.Button(welcome_frame,text='Info',
         command=lambda:self.About_Software())
         info_button.grid(column=7,row=7,sticky=(N,S,E,W))
