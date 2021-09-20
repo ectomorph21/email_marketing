@@ -17,6 +17,62 @@ class MainGUI:
         self.WEBSITE = 'https://www.randmssolutions.com/'
 #        print(root.state())
 #        print(root.wm_maxsize())
+#        print(root.tk.call('tk', 'windowingsystem') )
+        root.option_add('*tearOff', FALSE)
+        menubar = Menu(root)
+        root['menu'] = menubar
+        menu_conn = Menu(menubar)
+        menu_user = Menu(menubar)
+        menu_customers = Menu(menubar)
+        menu_subjects = Menu(menubar)
+        menu_templates = Menu(menubar)
+        menu_footers = Menu(menubar)
+        menu_badDomains = Menu(menubar)
+        menu_misc = Menu(menubar)
+        menu_help = Menu(menubar, name='help')
+        #menu_info = Menu(menubar)
+        
+        menubar.add_cascade(menu=menu_conn, label='Connection')
+        menubar.add_cascade(menu=menu_user, label='User')
+        menubar.add_cascade(menu=menu_customers, label='Customers')
+        menubar.add_cascade(menu=menu_subjects, label='Subjects')
+        menubar.add_cascade(menu=menu_templates, label='Email_templates')
+        menubar.add_cascade(menu=menu_footers, label='Footers')
+        menubar.add_cascade(menu=menu_badDomains, label='Bad_domains')
+        menubar.add_cascade(menu=menu_misc, label='Misc.')
+        menubar.add_cascade(menu=menu_help, label='Help')
+        menu_conn.add_command(label="Connect",command=lambda:sqlite_db_controller.locate_file())
+        menu_conn.add_command(label="Close",command=lambda:self.close_db())
+        menu_user.add_command(label="Create_user",command=lambda:create_sqlite_db.Enter_User_Data())
+        menu_user.add_command(label="Update_user",command=lambda:self.update_user())
+        menu_customers.add_command(label="Upload customers from CSV",command=lambda:self.upload_customers())
+        menu_customers.add_command(label="Export customers to CSV",command=lambda:sqlite_db_controller.export_csv())
+        menu_customers.add_command(label="Create customer",command=lambda:sqlite_db_controller.create_customer())
+        menu_customers.add_command(label="Update customer",command=lambda:self.update_customer())
+        menu_customers.add_command(label="Delete customer",command=lambda:self.delete_customer())
+        menu_subjects.add_command(label="View subjects",command=lambda:self.view_subjects())
+        menu_subjects.add_command(label="Create subject",command=lambda:sqlite_db_controller.create_subject())
+        menu_subjects.add_command(label="Update subject",command=lambda:sqlite_db_controller.update_subject())
+        menu_subjects.add_command(label="Delete subject",command=lambda:self.delete_subject())
+        menu_templates.add_command(label="View templates",command=lambda:self.view_templates())
+        menu_templates.add_command(label="Create template",command=lambda:sqlite_db_controller.create_template())
+        menu_templates.add_command(label="Update template",command=lambda:sqlite_db_controller.update_template())
+        menu_templates.add_command(label="Delete template",command=lambda:self.delete_template())
+        menu_footers.add_command(label="View footers",command=lambda:self.view_footers())
+        menu_footers.add_command(label="Create footer",command=lambda:sqlite_db_controller.create_footer())
+        menu_footers.add_command(label="Update footer",command=lambda:self.update_footer())
+        menu_footers.add_command(label="Delete footer",command=lambda:self.delete_footer())
+        menu_badDomains.add_command(label="View bad domains",command=lambda:self.view_bad_domains())
+        menu_badDomains.add_command(label="Create bad domains",command=lambda:sqlite_db_controller.add_bad_domain())
+        menu_badDomains.add_command(label="Delete bad domains",command=lambda:self.delete_bad_domain())
+        menu_misc.add_command(label="View all customers in DB",command=lambda:email_controller.view_all_customers(''))
+        menu_misc.add_command(label="View removed customers",
+        command=lambda:email_controller.view_all_customers('removed'))
+        menu_misc.add_command(label="View customers with bad domains",
+        command=lambda:email_controller.view_all_customers('bad_domain'))
+        menu_misc.add_command(label="Send random email",command=lambda:email_controller.random_email())
+        menu_misc.add_command(label="Send holiday emails",command=lambda:email_controller.view_holiday_email('customer'))
+        menu_help.add_command(label="Info",command=lambda:self.About_Software())
         root.title("Email Marketing")
         root.resizable(FALSE,FALSE)
         welcome_frame = ttk.Frame(root)
@@ -25,146 +81,53 @@ class MainGUI:
         s.theme_use('alt')
         s.configure('Caution.TButton',font='helvetica 12',foreground='red',padding=3)
         s.configure('Action.TButton',font='helvetica 12',foreground='green',padding=3)
-        #db buttons
-        connect_db = ttk.Button(welcome_frame,text='Connect to DB',
-        command=lambda:sqlite_db_controller.locate_file())
-        connect_db.grid(column=1,row=1,rowspan=2,sticky=(N,S,E,W))
-        close_db = ttk.Button(welcome_frame,text='Close DB',
-        command=lambda:self.close_db())
-        close_db.grid(column=1,row=3,rowspan=2,sticky=(N,S,E,W))
-        create_user = ttk.Button(welcome_frame,text='Create User',
-        command=lambda:create_sqlite_db.Enter_User_Data())
-        create_user.grid(column=2,row=1,rowspan=2,sticky=(N,S,E,W))
-        update_user = ttk.Button(welcome_frame,text='Update User',
-        command=lambda:self.update_user())
-        update_user.grid(column=2,row=3,rowspan=2,sticky=(N,S,E,W))
-        upload_customers = ttk.Button(welcome_frame,text='Upload customers',
-        command=lambda:self.upload_customers())
-        upload_customers.grid(column=3,row=1,sticky=(N,S,E,W))
-        create_customer = ttk.Button(welcome_frame,text='Create customer',
-        command=lambda:sqlite_db_controller.create_customer())
-        create_customer.grid(column=3,row=2,sticky=(N,S,E,W))
-        update_customer = ttk.Button(welcome_frame,text='Update customer',
-        command=lambda:self.update_customer())
-        update_customer.grid(column=3,row=3,sticky=(N,S,E,W))
-        delete_customer = ttk.Button(welcome_frame,text='Delete customer',
-        command=lambda:self.delete_customer())
-        delete_customer.grid(column=3,row=4,sticky=(N,S,E,W))
-        view_subjects = ttk.Button(welcome_frame,text='View subjects',
-        command=lambda:self.view_subjects())
-        view_subjects.grid(column=4,row=1,sticky=(N,S,E,W))
-        create_subject = ttk.Button(welcome_frame,text='Create subject',
-        command=lambda:sqlite_db_controller.create_subject())
-        create_subject.grid(column=4,row=2,sticky=(N,S,E,W))
-        update_subject = ttk.Button(welcome_frame,text='Update subject',
-        command=lambda:sqlite_db_controller.update_subject())
-        update_subject.grid(column=4,row=3,sticky=(N,S,E,W))
-        delete_subject = ttk.Button(welcome_frame,text='Delete subject',
-        command=lambda:self.delete_subject())
-        delete_subject.grid(column=4,row=4,sticky=(N,S,E,W))
-        view_templates = ttk.Button(welcome_frame,text='View templates',
-        command=lambda:self.view_templates())
-        view_templates.grid(column=5,row=1,sticky=(N,S,E,W))
-        create_template = ttk.Button(welcome_frame,text='Create template',
-        command=lambda:sqlite_db_controller.create_template())
-        create_template.grid(column=5,row=2,sticky=(N,S,E,W))
-        update_template = ttk.Button(welcome_frame,text='Update template',
-        command=lambda:sqlite_db_controller.update_template())
-        update_template.grid(column=5,row=3,sticky=(N,S,E,W))
-        delete_template = ttk.Button(welcome_frame,text='Delete template',
-        command=lambda:self.delete_template())
-        delete_template.grid(column=5,row=4,sticky=(N,S,E,W))
-        view_footers = ttk.Button(welcome_frame,text='View footers',
-        command=lambda:self.view_footers())
-        view_footers.grid(column=6,row=1,sticky=(N,S,E,W))
-        create_footer = ttk.Button(welcome_frame,text='Create footer',
-        command=lambda:sqlite_db_controller.create_footer())
-        create_footer.grid(column=6,row=2,sticky=(N,S,E,W))
-        update_footer = ttk.Button(welcome_frame,text='Update footer',
-        command=lambda:self.update_footer())
-        update_footer.grid(column=6,row=3,sticky=(N,S,E,W))
-        delete_footer = ttk.Button(welcome_frame, text='Delete footer',
-        command=lambda:self.delete_footer())
-        delete_footer.grid(column=6,row=4,sticky=(N,S,E,W))
-        view_bad_domains = ttk.Button(welcome_frame,text='View bad domains',
-        command=lambda:self.view_bad_domains())
-        view_bad_domains.grid(column=7,row=1,sticky=(N,S,E,W))
-        add_bad_domain = ttk.Button(welcome_frame,text='Add bad domain',
-        command=lambda:sqlite_db_controller.add_bad_domain())
-        add_bad_domain.grid(column=7,row=2,sticky=(N,S,E,W))
-        delete_bad_domain = ttk.Button(welcome_frame,text='Delete bad domain',
-        command=lambda:self.delete_bad_domain())
-        delete_bad_domain.grid(column=7,row=3,sticky=(N,S,E,W))
-        export_csv = ttk.Button(welcome_frame, text='Export customers',
-        command=lambda:sqlite_db_controller.export_csv())
-        export_csv.grid(column=7,row=4,sticky=(N,S,E,W))
         #customer views and action buttons
         view_prospects = ttk.Button(welcome_frame, text='Send bulk prospects',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('prospect'))
-        view_prospects.grid(column=1,row=5,sticky=(N,S,E,W))
+        view_prospects.grid(column=1,row=1,sticky=(N,S,E,W))
         view_targets = ttk.Button(welcome_frame, text='Send bulk targets',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('target'))
-        view_targets.grid(column=2,row=5,sticky=(N,S,E,W))
+        view_targets.grid(column=2,row=1,sticky=(N,S,E,W))
         view_quoted = ttk.Button(welcome_frame, text='Send bulk quoted',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('quoted'))
-        view_quoted.grid(column=3,row=5,sticky=(N,S,E,W))
+        view_quoted.grid(column=3,row=1,sticky=(N,S,E,W))
         view_customers = ttk.Button(welcome_frame, text='Send bulk customers',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('customer'))
-        view_customers.grid(column=4,row=5,sticky=(N,S,E,W))
+        view_customers.grid(column=4,row=1,sticky=(N,S,E,W))
         view_partners = ttk.Button(welcome_frame, text='Send bulk partners',style='Caution.TButton',
         command=lambda:email_controller.view_next_bulk('partner'))
-        view_partners.grid(column=5,row=5,sticky=(N,S,E,W))
-        holiday_button = ttk.Button(welcome_frame,text='Send holiday messages',style='Caution.TButton',
-        command=lambda:email_controller.view_holiday_email('customer'))
-        holiday_button.grid(column=6,row=5,sticky=(N,S,E,W))
-        view_all_button = ttk.Button(welcome_frame, text='View all customers in DB',style='Action.TButton',
-        command=lambda:email_controller.view_all_customers(''))
-        view_all_button.grid(column=7,row=5,sticky=(N,S,E,W))
+        view_partners.grid(column=5,row=1,sticky=(N,S,E,W))
         single_prospect = ttk.Button(welcome_frame, text='Send single prospect',style='Caution.TButton',
         command=lambda:email_controller.view_next_single('prospect'))
-        single_prospect.grid(column=1,row=6,sticky=(N,S,E,W))
+        single_prospect.grid(column=1,row=2,sticky=(N,S,E,W))
         single_target = ttk.Button(welcome_frame, text='Send single target',style='Caution.TButton',
         command=lambda:email_controller.view_next_single('target'))
-        single_target.grid(column=2,row=6,sticky=(N,S,E,W))
+        single_target.grid(column=2,row=2,sticky=(N,S,E,W))
         single_quoted = ttk.Button(welcome_frame, text='Send single quoted',style='Caution.TButton',
         command=lambda:email_controller.view_next_single('quoted'))
-        single_quoted.grid(column=3,row=6,sticky=(N,S,E,W))
+        single_quoted.grid(column=3,row=2,sticky=(N,S,E,W))
         single_customer = ttk.Button(welcome_frame, text='Send single customer',style='Caution.TButton',
         command=lambda:email_controller.view_next_single('customer'))
-        single_customer.grid(column=4,row=6,sticky=(N,S,E,W))
+        single_customer.grid(column=4,row=2,sticky=(N,S,E,W))
         single_partner = ttk.Button(welcome_frame, text='Send single partner',style='Caution.TButton',
         command=lambda:email_controller.view_next_single('partner'))
-        single_partner.grid(column=5,row=6,sticky=(N,S,E,W))
-        random_email = ttk.Button(welcome_frame, text='Send single random email',style='Caution.TButton',
-        command=lambda:email_controller.random_email())
-        random_email.grid(column=6,row=6,sticky=(N,S,E,W))
-        view_all_bd = ttk.Button(welcome_frame, text='View all bad domains',style='Action.TButton',
-        command=lambda:email_controller.view_all_customers('bad_domain'))
-        view_all_bd.grid(column=7,row=6,sticky=(N,S,E,W))
+        single_partner.grid(column=5,row=2,sticky=(N,S,E,W))
         all_prospects = ttk.Button(welcome_frame, text='View all prospects',style='Action.TButton',
         command=lambda:email_controller.view_all_customers('prospect'))
-        all_prospects.grid(column=1,row=7,sticky=(N,S,E,W))
+        all_prospects.grid(column=1,row=3,sticky=(N,S,E,W))
         all_targets = ttk.Button(welcome_frame, text='View all targets',style='Action.TButton',
         command=lambda:email_controller.view_all_customers('target'))
-        all_targets.grid(column=2,row=7,sticky=(N,S,E,W))
+        all_targets.grid(column=2,row=3,sticky=(N,S,E,W))
         all_quoted = ttk.Button(welcome_frame, text='View all quoted',style='Action.TButton',
         command=lambda:email_controller.view_all_customers('quoted'))
-        all_quoted.grid(column=3,row=7,sticky=(N,S,E,W))
+        all_quoted.grid(column=3,row=3,sticky=(N,S,E,W))
         all_customers = ttk.Button(welcome_frame, text='View all customers',style='Action.TButton',
         command=lambda:email_controller.view_all_customers('customer'))
-        all_customers.grid(column=4,row=7,sticky=(N,S,E,W))
+        all_customers.grid(column=4,row=3,sticky=(N,S,E,W))
         all_partners = ttk.Button(welcome_frame, text='View all partners',style='Action.TButton',
         command=lambda:email_controller.view_all_customers('partner'))
-        all_partners.grid(column=5,row=7,sticky=(N,S,E,W))
-        all_removed = ttk.Button(welcome_frame, text='View all removed',style='Action.TButton',
-        command=lambda:email_controller.view_all_customers('removed'))
-        all_removed.grid(column=6,row=7,sticky=(N,S,E,W))
-        info_button = ttk.Button(welcome_frame,text='Info',
-        command=lambda:self.About_Software())
-        info_button.grid(column=7,row=7,sticky=(N,S,E,W))
-#        test_button = ttk.Button(welcome_frame, text='Test',
-#        command=lambda:self.test_func())
-#        test_button.grid(column=7,row=8,sticky=(N,S,E,W))
+        all_partners.grid(column=5,row=3,sticky=(N,S,E,W))
+        #canvas logo image
         self.canvas = Canvas(welcome_frame,width=600,height=400)
         self.canvas.grid(column=1,row=11,columnspan=4)
         self.myimg = PhotoImage(file='newLogo.gif',height=386,width=500)
@@ -175,10 +138,6 @@ class MainGUI:
         """Software information with Github and website links"""
         messagebox.showinfo(title="About",message=f"Thank you for using this software.",detail=f"More information can be found at the following links:\n\n{self.GITHUB_PAGE}\n\n{self.WEBSITE}")
         
-#    def test_func(self):
-#        print('test')
-#        print(settings.ALL_SUBJECTS)
-
     def close_db(self):
         """Close SQLite DB connection."""
         sqlite_db_controller.close()
