@@ -259,8 +259,8 @@ def get_subjects():
     else:
         try:
             query = '''SELECT *
-                   FROM Subject
-                   ORDER BY subject_customer'''
+                   FROM Subject'''
+#                   ORDER BY subjectID
             with closing(conn.cursor()) as c:
                 c.execute(query)
                 results = c.fetchall()
@@ -385,8 +385,8 @@ def get_templates():
     else:
         try:
             query = '''SELECT *
-                   FROM EmailBody
-                   ORDER BY email_body_customer'''
+                   FROM EmailBody'''
+#                   ORDER BY emailbodyID
             with closing(conn.cursor()) as c:
                 c.execute(query)
                 results = c.fetchall()
@@ -584,6 +584,8 @@ def update_footer(*args):
                 c.execute(sql,(args[count].strip('\n'),footer_id))
                 conn.commit()
             count += 1
+        load_settings.clear_settings()
+        load_settings.load_settings()
     except Exception as e:
         messagebox.showerror(message='System error encountered',detail=f'{e}')
             
