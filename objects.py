@@ -31,7 +31,6 @@ class MarketingEmail():
         self.body = body
         self.signature = self.get_signature()
         self.footer = ""
-#        self.footer = self.get_footer()
         #msg.add_attachment(file_data,maintype='application',subtype='octet-stream',filename=file_name)
         
     def get_time_zone(self):
