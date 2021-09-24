@@ -1,6 +1,5 @@
 import smtplib
 import csv
-import json
 from datetime import *
 from email.message import EmailMessage
 from random import *
