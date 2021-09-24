@@ -31,7 +31,8 @@ class MarketingEmail():
         self.status = status
         self.body = body
         self.signature = self.get_signature()
-        self.footer = self.get_footer()
+        self.footer = ""
+#        self.footer = self.get_footer()
         #msg.add_attachment(file_data,maintype='application',subtype='octet-stream',filename=file_name)
         
     def get_time_zone(self):
@@ -69,11 +70,11 @@ class MarketingEmail():
         signature += settings.SIGNATURE[2]+'\n'
         return signature
         
-    def get_footer(self):
-        """Build footer in random order if multiple exist"""
+    def get_footer(self,build):
+        """Build footer"""
         if settings.FOOTER == []:
             return ''
-        else:
+        elif build == 'bulk':
             footer = settings.FOOTER[randint(0,len(settings.FOOTER)-1)]
             string_var = ''
             string_var += footer.headline+'\n'
@@ -86,21 +87,42 @@ class MarketingEmail():
             string_var += footer.feature7+'\n'
             string_var += footer.feature8
             return string_var
+        else:
+            string_var = ''
+            for f in settings.FOOTER:
+                if f.headline == build:
+                    footer = f
+                    string_var += footer.headline+'\n'
+                    string_var += footer.feature1+'\n'
+                    string_var += footer.feature2+'\n'
+                    string_var += footer.feature3+'\n'
+                    string_var += footer.feature4+'\n'
+                    string_var += footer.feature5+'\n'
+                    string_var += footer.feature6+'\n'
+                    string_var += footer.feature7+'\n'
+                    string_var += footer.feature8
+                    return string_var
         
-    def send_test_email(self):
+    def send_test_email(self,build):
         """Method to send test emails on debug server"""
-        self.msg.set_content(f"{self.get_greeting()} {self.name},\n\n{self.body}\n\n{self.signature}\n{self.footer}")
+        if build == '':
+            self.msg.set_content(f"{self.get_greeting()} {self.name},\n\n{self.body}\n\n{self.signature}\n{self.footer}")
+        else:
+            self.msg.set_content(f"{self.get_greeting()} {self.name},\n\n{self.body}\n\n{self.signature}\n{self.get_footer(build)}")
         with smtplib.SMTP('localhost',1025) as smtp:
             smtp.send_message(self.msg)
             
-    def send_live_email(self):
+    def send_live_email(self,build):
         """Method to send live emails"""
-        self.msg.set_content(f"{self.get_greeting()} {self.name},\n\n{self.body}\n\n{self.signature}\n{self.footer}")
+        if build == '':
+            self.msg.set_content(f"{self.get_greeting()} {self.name},\n\n{self.body}\n\n{self.signature}\n{self.footer}")
+        else:
+            self.msg.set_content(f"{self.get_greeting()} {self.name},\n\n{self.body}\n\n{self.signature}\n{self.get_footer(build)}")
         with smtplib.SMTP_SSL(settings.SMTP_SERVER,settings.PORT) as smtp:
             smtp.login(settings.EMAIL_LOGIN,settings.EMAIL_PASSWORD)
 #            print(self.msg)#for testing live format
             smtp.send_message(self.msg)
-
+    
 class User:
     def __init__(self,min_email=None,max_email=None,email_interval=None,time_zone=None,domain=None,
     smtp_server=None,port=None,email_login=None,email_password=None,from_header=None,unsubscribe_email=None,
