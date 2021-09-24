@@ -167,10 +167,10 @@ def send_bulk_email(build,send_list):
                 body = settings.PARTNER_TEMPLATES[randint(0,len(settings.PARTNER_TEMPLATES)-1)].replace("Company",c.company)
             if build == 'test':
                 test_email = MarketingEmail(c.email_address,subject,c.first_name,c.status,body)
-                test_email.send_test_email()
+                test_email.send_test_email('bulk')
             else:
                 live_email = MarketingEmail(c.email_address,subject,c.first_name,c.status,body)
-                live_email.send_live_email()
+                live_email.send_live_email('bulk')
                 settings.SENT_LIST.append(c.email_address)
         if build == 'live':
             settings.LIMIT.clear()
@@ -191,10 +191,10 @@ def send_holiday_message(build,send_list):
             body = settings.HOLIDAY_TEMPLATES[randint(0,len(settings.HOLIDAY_TEMPLATES)-1)].replace("Company",c.company)
             if build == 'test':
                 test_email = MarketingEmail(c.email_address,subject,c.first_name,c.status,body)
-                test_email.send_test_email()
+                test_email.send_test_email('')
             else:
                 live_email = MarketingEmail(c.email_address,subject,c.first_name,c.status,body)
-                live_email.send_live_email()
+                live_email.send_live_email('')
                 settings.SENT_LIST.append(c.email_address)
         if build == 'live':
             settings.LIMIT.clear()
@@ -308,6 +308,7 @@ def build_single_email(build,name,status,customer,address):
     try:
         subject = StringVar()
         body = StringVar(value=settings.ALL_TEMPLATES)
+        footer = StringVar()#added 9-24-2021
         user_entry = Toplevel()
         user_entry.title("Build email")
         user_entry.geometry('1100x700')
@@ -324,9 +325,14 @@ def build_single_email(build,name,status,customer,address):
         label.grid()
         bbox = Listbox(frame,listvariable=body,selectmode="single",width=120,height=10)
         bbox.grid()
+        label = ttk.Label(frame, text='Choose footer',font='Helvetica 12 bold')
+        label.grid(sticky=W)
+        for f in settings.FOOTER:
+            rb = ttk.Radiobutton(frame,compound='left',text=f'{f.headline}',variable=footer,value=f'{f.headline}')
+            rb.grid(sticky=W)
         button = ttk.Button(frame,text=f'Submit',
         command=lambda:[listbox_error(bbox.curselection()),send_single_email(build,name,status,customer,address
-        ,subject.get(),bbox.get(bbox.curselection())),user_entry.destroy()])
+        ,subject.get(),bbox.get(bbox.curselection()),footer.get()),user_entry.destroy()])
         button.grid()
     except Exception as e:
         messagebox.showerror(message='System error encountered.',detail=f'{e}')
@@ -340,12 +346,12 @@ def send_single_email(*args):
             if args[0] == 'test':
                 body = args[6].replace("Company",args[3])
                 test_email = MarketingEmail(args[4],args[5],args[1],args[2],body)
-                test_email.send_test_email()
+                test_email.send_test_email(args[7])
                 messagebox.showinfo(message='Test emails sent.',detail='Check terminal printout for format.')
             else:
                 body = args[6].replace("Company",args[3])
                 live_email = MarketingEmail(args[4],args[5],args[1],args[2],body)
-                live_email.send_live_email()
+                live_email.send_live_email(args[7])
                 settings.SENT_LIST.append(args[4])
                 sqlite_db_controller.update_last_contact(settings.SENT_LIST)
                 settings.SENT_LIST.clear()
