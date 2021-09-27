@@ -15,9 +15,9 @@ class MainGUI:
         """Main tkinter window"""
         self.GITHUB_PAGE = 'https://github.com/ectomorph21/email_marketing'
         self.WEBSITE = 'https://www.randmssolutions.com/'
-#        print(root.state())
-#        print(root.wm_maxsize())
 #        print(root.tk.call('tk', 'windowingsystem') )
+        settings.SCREEN.append(root.winfo_screenwidth())
+        settings.SCREEN.append(root.winfo_screenheight())
         root.option_add('*tearOff', FALSE)
         menubar = Menu(root)
         root['menu'] = menubar
@@ -140,7 +140,7 @@ class MainGUI:
     def close_db(self):
         """Close SQLite DB connection."""
         sqlite_db_controller.close()
-        messagebox.showinfo(message='DB closed.',detail='Program will be closed.')
+        messagebox.showinfo(parent=root,message='DB closed.',detail='Program will be closed.')
         root.destroy()
         
     def update_user(self):
