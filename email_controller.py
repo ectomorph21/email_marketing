@@ -43,8 +43,7 @@ def view_all_customers(build):
                     count += 1
         c_display = Toplevel()
         c_display.title(f'All {build} customers')
-        c_display.geometry('1360x738')
-        display_customers = Text(c_display,width=1360,height=738,wrap='none')
+        display_customers = Text(c_display,width=settings.SCREEN[0],height=settings.SCREEN[1],wrap='none')
         ys = ttk.Scrollbar(c_display,orient='vertical',command=display_customers.yview)
         xs = ttk.Scrollbar(c_display,orient='horizontal',command=display_customers.xview)
         display_customers['yscrollcommand'] = ys.set
@@ -82,7 +81,7 @@ def view_next_bulk(build):
                 else:
                     continue
         c_display = Toplevel()
-        c_display.title(f'Next {settings.LIMIT[0]} customer to email')
+        c_display.title(f'Next {settings.LIMIT[0]} customers to email')
         c_display.geometry('500x300-75-75')
         display_customers = Text(c_display,width=500,height=300)
         ys = ttk.Scrollbar(c_display,orient='vertical',command=display_customers.yview)
@@ -93,7 +92,7 @@ def view_next_bulk(build):
         c_display.grid_columnconfigure(0,weight=1)
         c_display.grid_rowconfigure(0,weight=1)
         button = ttk.Button(c_display,text=f'Send test emails',
-        command=lambda:[send_bulk_email('test',send_list)])
+        command=lambda:[send_bulk_email('test',send_list,c_display)])
         button.grid()
         button = ttk.Button(c_display,text=f'Send live emails',
         command=lambda:[send_bulk_email('live',send_list),c_display.destroy()])
@@ -138,15 +137,15 @@ def view_holiday_email(build):
         c_display.grid_columnconfigure(0,weight=1)
         c_display.grid_rowconfigure(0,weight=1)
         button = ttk.Button(c_display,text=f'Send test holiday message',
-        command=lambda:[send_holiday_message('test',send_list)])
+        command=lambda:[send_holiday_message('test',send_list,c_display)])
         button.grid()
         button = ttk.Button(c_display,text=f'Send live holiday message',
-        command=lambda:[send_holiday_message('live',send_list),c_display.destroy()])
+        command=lambda:[send_holiday_message('live',send_list,c_display),c_display.destroy()])
         button.grid()
         button = ttk.Button(c_display,text=f'Close & exit',command=lambda:c_display.destroy())
         button.grid()
         
-def send_bulk_email(build,send_list):
+def send_bulk_email(build,send_list,window):
     """Build and send bulk messages"""
     try:
         for c in send_list:
@@ -177,13 +176,14 @@ def send_bulk_email(build,send_list):
             settings.LIMIT.append(randint(settings.MIN_EMAIL,settings.MAX_EMAIL))
             sqlite_db_controller.update_last_contact(settings.SENT_LIST)
             settings.SENT_LIST.clear()
-            messagebox.showinfo(message=f'{settings.LIMIT[0]} Emails sent.',detail='Check mail server for delivery.')
+            messagebox.showinfo(parent=window,message=f'{settings.LIMIT[0]} Emails sent.',
+            detail='Check mail server for delivery.')
         else:
-            messagebox.showinfo(message='Test emails sent.',detail='Check terminal printout for format.')
+            messagebox.showinfo(parent=window,message='Test emails sent.',detail='Check terminal printout for format.')
     except Exception as e:
-        messagebox.showerror(message='System error encountered.',detail=f'{e}')
+        messagebox.showerror(parent=window,message='System error encountered.',detail=f'{e}')
         
-def send_holiday_message(build,send_list):
+def send_holiday_message(build,send_list,window):
     """Build and send holiday message"""
     try:
         for c in send_list:
@@ -201,11 +201,12 @@ def send_holiday_message(build,send_list):
             settings.LIMIT.append(randint(settings.MIN_EMAIL,settings.MAX_EMAIL))
             sqlite_db_controller.update_last_contact(settings.SENT_LIST)
             settings.SENT_LIST.clear()
-            messagebox.showinfo(message=f'{settings.LIMIT[0]} Emails sent.',detail='Check mail server for delivery.')
+            messagebox.showinfo(parent=window,message=f'{settings.LIMIT[0]} Emails sent.',
+            detail='Check mail server for delivery.')
         else:
-            messagebox.showinfo(message='Test emails sent.',detail='Check terminal printout for format.')
+            messagebox.showinfo(parent=window,message='Test emails sent.',detail='Check terminal printout for format.')
     except Exception as e:
-        messagebox.showerror(message='System error encountered.',detail=f'{e}')
+        messagebox.showerror(parent=window,message='System error encountered.',detail=f'{e}')
     
 def view_next_single(build):
     """View single email based on build variable passed"""
@@ -308,11 +309,10 @@ def build_single_email(build,name,status,customer,address):
     try:
         subject = StringVar()
         body = StringVar(value=settings.ALL_TEMPLATES)
-        footer = StringVar()#added 9-24-2021
+        footer = StringVar()
         user_entry = Toplevel()
         user_entry.title("Build email")
-        user_entry.geometry('1100x700')
-        frame = ttk.Frame(user_entry,width=1100, height=700)
+        frame = ttk.Frame(user_entry)
         frame.grid(column=0,row=0)
         user_entry.grid_columnconfigure(0,weight=1)
         user_entry.grid_rowconfigure(0,weight=1)
@@ -332,10 +332,10 @@ def build_single_email(build,name,status,customer,address):
             rb.grid(sticky=W)
         button = ttk.Button(frame,text=f'Submit',
         command=lambda:[listbox_error(bbox.curselection()),send_single_email(build,name,status,customer,address
-        ,subject.get(),bbox.get(bbox.curselection()),footer.get()),user_entry.destroy()])
+        ,subject.get(),bbox.get(bbox.curselection()),footer.get(),user_entry),user_entry.destroy()])
         button.grid()
     except Exception as e:
-        messagebox.showerror(message='System error encountered.',detail=f'{e}')
+        messagebox.showerror(parent=user_entry,message='System error encountered.',detail=f'{e}')
         
 def send_single_email(*args):
     """Send single test and live email"""
@@ -347,7 +347,7 @@ def send_single_email(*args):
                 body = args[6].replace("Company",args[3])
                 test_email = MarketingEmail(args[4],args[5],args[1],args[2],body)
                 test_email.send_test_email(args[7])
-                messagebox.showinfo(message='Test emails sent.',detail='Check terminal printout for format.')
+                messagebox.showinfo(parent=args[8],message='Test email sent.',detail='Check terminal printout for format.')
             else:
                 body = args[6].replace("Company",args[3])
                 live_email = MarketingEmail(args[4],args[5],args[1],args[2],body)
@@ -355,9 +355,9 @@ def send_single_email(*args):
                 settings.SENT_LIST.append(args[4])
                 sqlite_db_controller.update_last_contact(settings.SENT_LIST)
                 settings.SENT_LIST.clear()
-                messagebox.showinfo(message='Email sent.',detail='Check mail server for delivery.')
+                messagebox.showinfo(parent=args[8],message='Email sent.',detail='Check mail server for delivery.')
     except Exception as e:
-        messagebox.showerror(message='System error encountered.',detail=f'{e}')
+        messagebox.showerror(parent=args[8],message='System error encountered.',detail=f'{e}')
         
 def listbox_error(list_var):
     """Catch empty listboxes"""
