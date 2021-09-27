@@ -316,21 +316,30 @@ def build_single_email(build,name,status,customer,address):
         frame.grid(column=0,row=0)
         user_entry.grid_columnconfigure(0,weight=1)
         user_entry.grid_rowconfigure(0,weight=1)
-        label = ttk.Label(frame, text='Choose subject',font='Helvetica 12 bold')
+        canvas = Canvas(frame,width=(settings.SCREEN[0]-300),height=(settings.SCREEN[1]-100))
+        canvas.grid(column=0,row=0)
+        scrollbar = ttk.Scrollbar(frame,orient=VERTICAL,command=canvas.yview)
+        scrollbar.grid(column=1,row=0,sticky=(NS))
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.bind('<Configure>',
+        lambda e:canvas.configure(scrollregion=canvas.bbox("all")))
+        content_frame = ttk.Frame(canvas,padding=(30,0,0,0))
+        canvas.create_window((0,0),window=content_frame)
+        label = ttk.Label(content_frame,text='Choose subject',font='Helvetica 12 bold')
         label.grid(sticky=W)
         for s in settings.ALL_SUBJECTS:
-            rb = ttk.Radiobutton(frame,compound='left',text=f'{s}',variable=subject,value=f'{s}')
+            rb = ttk.Radiobutton(content_frame,compound='left',text=f'{s}',variable=subject,value=f'{s}')
             rb.grid(sticky=W)
-        label = ttk.Label(frame,text='Choose email body',font='Helvetica 12 bold')
+        label = ttk.Label(content_frame,text='Choose email body',font='Helvetica 12 bold')
         label.grid()
-        bbox = Listbox(frame,listvariable=body,selectmode="single",width=120,height=10)
+        bbox = Listbox(content_frame,listvariable=body,selectmode="single",width=120,height=10)
         bbox.grid()
-        label = ttk.Label(frame, text='Choose footer',font='Helvetica 12 bold')
+        label = ttk.Label(content_frame, text='Choose footer',font='Helvetica 12 bold')
         label.grid(sticky=W)
         for f in settings.FOOTER:
-            rb = ttk.Radiobutton(frame,compound='left',text=f'{f.headline}',variable=footer,value=f'{f.headline}')
+            rb = ttk.Radiobutton(content_frame,compound='left',text=f'{f.headline}',variable=footer,value=f'{f.headline}')
             rb.grid(sticky=W)
-        button = ttk.Button(frame,text=f'Submit',
+        button = ttk.Button(content_frame,text=f'Submit',
         command=lambda:[listbox_error(bbox.curselection()),send_single_email(build,name,status,customer,address
         ,subject.get(),bbox.get(bbox.curselection()),footer.get(),user_entry),user_entry.destroy()])
         button.grid()
