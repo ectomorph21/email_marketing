@@ -70,3 +70,4 @@ CALL_DATE = timedelta(days=EMAIL_INTERVAL)
 #DATE = datetime.today()
 LIMIT = []
 SENT_LIST = []
+SCREEN = []
