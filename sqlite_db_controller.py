@@ -18,7 +18,7 @@ DATE = datetime.today()
 
 def locate_file():
     """Locate SQLite DB file"""
-    sqlite_file = filedialog.askopenfilename(filetypes=[("SQLITE",'*.sqlite')])
+    sqlite_file = filedialog.askopenfilename(filetypes=[("SQLITE",'*.sqlite'),("DB",'*.db')])
     if sqlite_file == () or sqlite_file == "":
         messagebox.showinfo(message='No file selected',detail='Possible solution: create new user')
     else:
@@ -737,8 +737,9 @@ def export_csv():
         try:
             customers = get_customers()
             date = DATE.strftime("%m-%d-%y")
-            with open(f"{settings.MAILING_LIST}_customer_table_dump{date}.csv",
-            'w', newline='') as csvfile:
+            save_as = filedialog.asksaveasfilename(defaultextension="csv",filetypes=[("CSV",'*.csv')],
+            initialfile=f"{settings.MAILING_LIST}_customer_table_dump{date}.csv")
+            with open(save_as,'w', newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 writer.writerow(['Company','City','State','Status','First name','Last name','Email','Last contact','Notes'])
                 for c in customers:
