@@ -188,6 +188,7 @@ def create_customer():
                     label = ttk.Label(frame, text=f'{value}')
                     label.grid(column=1,row=row_count)
                     cbox = ttk.Combobox(frame,textvariable=status,values=settings.CUSTOMER_STATUS)
+                    cbox.state(["readonly"])
                     cbox.grid(column=2,row=row_count)
                 else:
                     label = ttk.Label(frame, text=f'{value}')
@@ -291,6 +292,7 @@ def create_subject():
             subject_id.grid()
             label = ttk.Label(frame,text='customer').grid()
             cbox = ttk.Combobox(frame,textvariable=customer,values=settings.SUBJECT_CUSTOMER)
+            cbox.state(["readonly"])
             cbox.grid()
             label = ttk.Label(frame,text='subject').grid()
             subject = Entry(frame,width=20)
@@ -416,6 +418,7 @@ def create_template():
             entry.grid()
             label = ttk.Label(frame,text='type').grid()
             cbox = ttk.Combobox(frame,textvariable=customer,values=settings.SUBJECT_CUSTOMER)
+            cbox.state(["readonly"])
             cbox.grid()
             label = ttk.Label(frame,text='body')
             body = Text(frame,width=50,height=4)
