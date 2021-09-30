@@ -10,7 +10,7 @@ USER_DATA = {
 'port':'port (i.e. 465 or 587)',
 'email_login':'your email login',
 'email_password':'your email password',
-'from_header':'from header (i.e. John Doe - John Doe Inc <john@johndoeinc.com)',
+'from_header':'from header (i.e. John Doe - John Doe Inc <john@johndoeinc.com>)',
 'unsubscribe_email':'email you want unsubscribe emails to be directed to',
 'mailing_list':'mailing list - database and other tables will be tied to this variable',
 'first_name':'your first name',
