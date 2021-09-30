@@ -47,7 +47,8 @@ Use the debug server to get your email templates just right, before sending live
 User,Customer,Subject,EmailBody,Footer,EmailCheck
 -to create executables
 Debian tested with auto-py-to-exe successfully
-Windows testing cx_freeze
+Windows tested cx_freeze for exe and msi successfully
+*not tested with Mac OS or installer
 -Internationalization
 Users wanting different time_zones can overwrite during user creation or update. Can also add respective local time time_zones
 into settings.py TIME_ZONES list. Use pytz times zones (pytz.common_timezones or pytz.all_timezones) to identify available time zones
