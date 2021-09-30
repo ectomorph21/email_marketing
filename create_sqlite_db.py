@@ -50,7 +50,7 @@ def Enter_User_Data():
     command=lambda:[Create_User(min_email.get(),max_email.get(),email_interval.get(),time_zone.get(),
     domain.get(),smtp_server.get(),port.get(),email_login.get(),email_password.get(),
     from_header.get(),unsubscribe_email.get(),mailing_list.get(),first_name.get(),
-    last_name.get(),phone.get()),user_entry.destroy()])
+    last_name.get(),phone.get(),user_entry),user_entry.destroy()])
     button.grid(column=1,row=(row_count+1),columnspan=4)
 
 def Create_User(*args):
@@ -63,10 +63,13 @@ def Create_User(*args):
                 empty_field = True
             count += 1
         if empty_field == False:
-            confirm = messagebox.askyesno(message='Confirm user creation.',
-            detail='This will create new SQLite database associated with first and last name and mailing list entered. Recommend you back up customer data with export csv function.',icon='warning')
+            confirm = messagebox.askyesno(parent=args[15],message='Confirm user creation.',
+            detail='This will create new SQLite database associated with first and last name and mailing list entered. Recommend you back up customer data with export csv function before over writing existing DB.',icon='warning')
             if confirm == True:
-                conn = sqlite3.connect(f"{args[12]}_{args[13]}_{args[11]}_db.sqlite")
+                save_as = filedialog.asksaveasfilename(defaultextension="sqlite",
+                filetypes=[("SQLITE",'*.sqlite'),("DB",'*.db')],
+                initialfile=f"{args[12]}_{args[13]}_{args[11]}_db.sqlite")
+                conn = sqlite3.connect(save_as)
                 c = conn.cursor()
                 #drop tables
                 c.execute("""DROP TABLE IF EXISTS User""")
