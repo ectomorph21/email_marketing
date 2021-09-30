@@ -11,7 +11,7 @@ from email_controller import *
 import email_controller
 
 class MainGUI:
-    def __init__(self, root):
+    def __init__(self,root):
         """Main tkinter window"""
         self.GITHUB_PAGE = 'https://github.com/ectomorph21/email_marketing'
         self.WEBSITE = 'https://www.randmssolutions.com/'
@@ -73,6 +73,8 @@ class MainGUI:
         menu_misc.add_command(label="Send holiday emails",command=lambda:email_controller.view_holiday_email('customer'))
         menu_help.add_command(label="Info",command=lambda:self.About_Software())
         root.title("Email Marketing")
+        icon=PhotoImage(file="newLogo.gif")
+        root.iconphoto(True,icon)
         root.resizable(FALSE,FALSE)
         welcome_frame = ttk.Frame(root)
         welcome_frame.grid(column=0,row=0)
@@ -312,6 +314,7 @@ class MainGUI:
             cbox = ttk.Combobox(content_frame,textvariable=status,values=settings.CUSTOMER_STATUS)
             cbox.grid()
             cbox.set(customer[4])
+            cbox.state(["readonly"])
             label = ttk.Label(content_frame,text=f'{data.pop(0)}').grid()
             first = Text(content_frame,width=15,height=1)
             first.insert(1.0,customer[5])
